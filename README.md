@@ -444,4 +444,32 @@ public class HttpClientUtils {
     }
 ```
 
-    
+### 实验过程中一个BUG
+- 一个很奇怪竟然不知道是为什么的bug
+```$xslt
+WARNING     -- [2019-09-10 16:15:27 CEST] -- HttpRequestGroup::executeRequest(): Error running command https://@{host}:8080/platform/1/statistics/current?key=node.disk.name.0&[full request omitted for sake of clarity]&devid=all on host isilon for requests group ISILON2-NODE-DISK-PERFORMANCE-METRICS
+java.lang.ClassCastException: [B cannot be cast to java.lang.String
+    at org.apache.http.conn.ssl.DefaultHostnameVerifier.getSubjectAltNames(DefaultHostnameVerifier.java:309)
+    at org.apache.http.conn.ssl.AbstractVerifier.verify(AbstractVerifier.java:136)
+    at org.apache.http.conn.ssl.AbstractVerifier.verify(AbstractVerifier.java:123)
+    at org.apache.http.conn.ssl.SSLConnectionSocketFactory.verifyHostname(SSLConnectionSocketFactory.java:463)
+    at org.apache.http.conn.ssl.SSLConnectionSocketFactory.createLayeredSocket(SSLConnectionSocketFactory.java:397)
+    at org.apache.http.conn.ssl.SSLConnectionSocketFactory.connectSocket(SSLConnectionSocketFactory.java:355)
+    at org.apache.http.impl.conn.DefaultHttpClientConnectionOperator.connect(DefaultHttpClientConnectionOperator.java:142)
+    at org.apache.http.impl.conn.PoolingHttpClientConnectionManager.connect(PoolingHttpClientConnectionManager.java:359)
+    at org.apache.http.impl.execchain.MainClientExec.establishRoute(MainClientExec.java:381)
+    at org.apache.http.impl.execchain.MainClientExec.execute(MainClientExec.java:237)
+    at org.apache.http.impl.execchain.ProtocolExec.execute(ProtocolExec.java:185)
+    at org.apache.http.impl.execchain.RetryExec.execute(RetryExec.java:89)
+    at org.apache.http.impl.execchain.RedirectExec.execute(RedirectExec.java:111)
+    at org.apache.http.impl.client.InternalHttpClient.doExecute(InternalHttpClient.java:185)
+    at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:72)
+    at 
+```  
+- 然后找到了一个帖，说是版本问题 
+```$xslt
+After upgrade to HttpClient 4.5.3, all of a sudden I started to receive the following exception in one of my projects:
+java.lang.ClassCastException: [B cannot be cast to java.lang.String
+```
+- 果然，我将httpclient的版本升级到4.5.5就可以了，隐藏的有点深
+- [refer](https://community.emc.com/docs/DOC-64472)
