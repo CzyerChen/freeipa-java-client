@@ -39,7 +39,7 @@ public class APIServerClient implements APIServer {
     private String server;
 
     private final String url = "https://xxxxx.com";
-    private final String ipaUrl = "https://xxxxxx/ipa";
+    private final String ipaUrl = "http://xxxxxxxx/ipa";
 
 
     /**
@@ -61,7 +61,8 @@ public class APIServerClient implements APIServer {
      * @param password
      * @throws UnsupportedEncodingException
      */
-    public void login(String user,String password) throws UnsupportedEncodingException {
+    @Override
+    public void login(String user, String password) throws UnsupportedEncodingException {
         RestTemplate restTemplate = new RestTemplate();
         String url = ipaUrl+"/session/login_password";
         String bodyValTemplate = "user=" + URLEncoder.encode(user
@@ -84,6 +85,7 @@ public class APIServerClient implements APIServer {
      * @param pdict
      * @return
      */
+    @Override
     public String  makeRequest(Map<String,Object> pdict){
         String sessionURL = ipaUrl+"/session/json";
         HttpHeaders headers = new HttpHeaders();
@@ -109,6 +111,7 @@ public class APIServerClient implements APIServer {
         return null;
     }
 
+    @Override
     public String showConfig() {
         HashMap<String, Object> pdict = new HashMap<String, Object>();
         pdict.put("method","config_show");

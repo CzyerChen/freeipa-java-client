@@ -30,7 +30,7 @@ public class IPATest {
     @Test
     public void testAPILogin() {
         try {
-            apiServer.login("chenziyan","czy123456");
+            apiServer.login("username","password");
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -51,8 +51,8 @@ public class IPATest {
 
     @Test
     public void testLoginWithCookie() throws IOException {
-        String url = "https://cdh4.fibodt.com";
-        String ipaUrl = "https://cdh4.fibodt.com/ipa";
+        String url = "https://xxxx";
+        String ipaUrl = "https://xxxxx/ipa";
 
         //用户登陆
         List<Header> l1 = new ArrayList<>();
